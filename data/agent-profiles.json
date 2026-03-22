@@ -1,0 +1,9 @@
+[
+  {
+    "id": "main",
+    "label": "Main agent",
+    "targetAgentId": "main",
+    "defaultThinking": "low",
+    "notes": "Default OpenClaw agent"
+  }
+]

@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenClaw Local Dashboard</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="bg-grid"></div>
+
+  <main class="wrap shell">
+    <header class="hero hero-panel">
+      <div>
+        <p class="eyebrow">Live agent control</p>
+        <h1>OpenClaw mission board</h1>
+        <p class="sub">Watch tracked agents, inspect recent sessions, and dispatch work without leaving your Linux box.</p>
+      </div>
+      <div class="actions controls">
+        <div class="refresh-controls">
+          <label class="inline-toggle" for="autoRefreshToggle">
+            <input id="autoRefreshToggle" type="checkbox" checked />
+            <span>Live sync</span>
+          </label>
+          <select id="refreshIntervalSelect" aria-label="Refresh interval">
+            <option value="5">5s</option>
+            <option value="10" selected>10s</option>
+            <option value="15">15s</option>
+            <option value="30">30s</option>
+          </select>
+        </div>
+        <button id="refreshBtn">Refresh now</button>
+      </div>
+    </header>
+
+    <section class="status-strip hero-panel">
+      <div id="refreshStatus" class="status-pill">Idle</div>
+      <div id="nextRefresh" class="status-meta">Live sync every 10s</div>
+      <div id="dashboardError" class="status-error hidden"></div>
+    </section>
+
+    <section class="grid top-band">
+      <article class="card accent-card">
+        <p class="mini-label">Tracked agents</p>
+        <div id="trackedAgentCountHero" class="hero-stat">0</div>
+        <p class="muted">Agents visible on the board right now</p>
+      </article>
+      <article class="card accent-card">
+        <p class="mini-label">Recent sessions</p>
+        <div id="sessionCountHero" class="hero-stat">0</div>
+        <p class="muted">Latest OpenClaw activity streamed into the UI</p>
+      </article>
+      <article class="card accent-card">
+        <p class="mini-label">Live state</p>
+        <div id="liveModeHero" class="hero-stat hero-stat-small">connected</div>
+        <p class="muted">Server-sent updates keep agent activity fresh</p>
+      </article>
+    </section>
+
+    <section class="grid two-col">
+      <article class="card glass-card">
+        <div class="row-between">
+          <h2>Tracked agents</h2>
+          <span id="trackedAgentCount" class="pill"></span>
+        </div>
+        <div id="agentsTable"></div>
+      </article>
+
+      <article class="card glass-card">
+        <h2>Add tracked agent</h2>
+        <p class="muted">Watch any existing OpenClaw agent id. The dashboard will show activity, session history, and token use as they change.</p>
+        <form id="trackedAgentForm" class="form-stack compact">
+          <label>
+            Agent id
+            <input id="trackedAgentId" placeholder="ops" required />
+          </label>
+          <label>
+            Label
+            <input id="trackedAgentLabel" placeholder="Ops agent" required />
+          </label>
+          <label>
+            Notes
+            <input id="trackedAgentNotes" placeholder="Checks server health and logs" />
+          </label>
+          <button type="submit">Add tracked agent</button>
+        </form>
+        <div id="trackedAgentsList" class="profiles"></div>
+      </article>
+    </section>
+
+    <section class="grid two-col">
+      <article class="card glass-card">
+        <div class="row-between">
+          <h2>Recent sessions</h2>
+          <span id="sessionCount" class="pill"></span>
+        </div>
+        <div id="sessionsTable"></div>
+      </article>
+
+      <article class="card glass-card">
+        <h2>Assign task</h2>
+        <form id="taskForm" class="form-stack">
+          <label>
+            Task profile
+            <select id="profileSelect"></select>
+          </label>
+          <label>
+            Target OpenClaw agent id
+            <input id="targetAgentId" placeholder="main" required />
+          </label>
+          <label>
+            Thinking
+            <select id="thinkingSelect">
+              <option value="">Default</option>
+              <option value="low">low</option>
+              <option value="medium">medium</option>
+              <option value="high">high</option>
+            </select>
+          </label>
+          <label>
+            Task message
+            <textarea id="taskMessage" rows="7" placeholder="Summarize recent OpenClaw activity and tell me if anything needs attention." required></textarea>
+          </label>
+          <button type="submit">Send task</button>
+        </form>
+        <pre id="taskResult" class="pre small"></pre>
+      </article>
+    </section>
+
+    <section class="grid single-col">
+      <article class="card glass-card">
+        <h2>Task profiles</h2>
+        <p class="muted">Profiles stay local to the dashboard and point at existing OpenClaw agents. Good tradeoff: quick dispatch, no config surgery.</p>
+        <form id="profileForm" class="form-stack compact three-up">
+          <label>
+            Profile id
+            <input id="profileId" placeholder="ops" required />
+          </label>
+          <label>
+            Label
+            <input id="profileLabel" placeholder="Ops helper" required />
+          </label>
+          <label>
+            Target agent id
+            <input id="profileTargetAgentId" placeholder="main" required />
+          </label>
+          <label>
+            Default thinking
+            <select id="profileThinking">
+              <option value="low">low</option>
+              <option value="medium">medium</option>
+              <option value="high">high</option>
+            </select>
+          </label>
+          <label class="span-2">
+            Notes
+            <input id="profileNotes" placeholder="For health/status checks" />
+          </label>
+          <button type="submit">Add profile</button>
+        </form>
+        <div id="profilesList" class="profiles profiles-grid"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
